@@ -1,12 +1,25 @@
-class RadioTest {
+class BaseTest {
+    constructor(question) {
+        this.question = question
+    }
+
+    getHtmlCodeForTest() {
+        return "no html"
+    }
+    evaluateAnswer() {
+        return -1
+    }
+}
+
+class RadioTest extends BaseTest {
     // питання, список відповідей (впорядкований)
     // правильна відповідь - перша відповідь у списку
     constructor(question, answers) {
-        this.question = question
+        super(question)
         this.answers = answers
     }
 
-    getHtmlCode() {
+    getHtmlCodeForTest() {
         let questionLabel = document.createElement("label")
         questionLabel.innerText = this.question
         let shuffledAnswers = Array.from(this.answers)
@@ -43,15 +56,15 @@ class RadioTest {
     }
 }
 
-class CheckboxTest {
+class CheckboxTest extends BaseTest {
     // питання, список відповідей (впорядкований), кількість правильних відповідей (перші n відповідей у впорядкованому списку відповідей)
     constructor(question, answers, numberOfRightAnswers) {
-        this.question = question
+        super(question)
         this.answers = answers
         this.numberOfRightAnswers = numberOfRightAnswers
     }
 
-    getHtmlCode() {
+    getHtmlCodeForTest() {
         let questionLabel = document.createElement("label")
         questionLabel.innerText = this.question
         let shuffledAnswers = Array.from(this.answers)
@@ -94,14 +107,14 @@ class CheckboxTest {
     }
 }
 
-class InputTest {
+class InputTest extends BaseTest {
     // Питання, відповідь
     constructor(question, answer) {
-        this.question = question
+        super(question)
         this.answer = answer
     }
 
-    getHtmlCode() {
+    getHtmlCodeForTest() {
         let questionLabel = document.createElement("label")
         questionLabel.innerText = this.question
         let input = document.createElement("input")
@@ -126,15 +139,15 @@ class InputTest {
     }
 }
 
-class DropdownTest {
+class DropdownTest extends BaseTest {
     // питання, список відповідей (впорядкований)
     // правильна відповідь - перша відповідь у списку
     constructor(question, answers) {
-        this.question = question
+        super(question)
         this.answers = answers
     }
 
-    getHtmlCode() {
+    getHtmlCodeForTest() {
         let questionLabel = document.createElement("label")
         questionLabel.innerText = this.question
         questionLabel.setAttribute("for", this.question)
@@ -170,15 +183,15 @@ class DropdownTest {
     }
 }
 
-class DragDropTest {
+class DragDropTest extends BaseTest {
     // Питання, відповіді (в вірній послідовності), ім'я тесту (унікальне, потрібно для обробки відповідей)
     constructor(question, answers, name) {
-        this.question = question
+        super(question)
         this.answers = answers
         this.name = name
     }
 
-    getHtmlCode() {
+    getHtmlCodeForTest() {
         let questionLabel = document.createElement("label")
         questionLabel.innerText = this.question
         let shuffledAnswers = Array.from(this.answers)
@@ -213,18 +226,84 @@ class DragDropTest {
         return score;
     }
 }
-
-
-// let myTest = new CheckboxTest("2 + 2", [4, 5, 6, 7, 8], 2)    
+  
 let myTests = []
 
-myTests.push(new DragDropTest("2 + 2", [4, 5, 6, 7, 8], "first"))    
-// let myInput = new InputTest("p with text 'roman'", "<p>roman</p>")    
+myTests.push(new RadioTest("What is the prototype of an object in JavaScript used for?",
+[
+    "The prototype of an object in JavaScript is used to provide a mechanism for inheritance and to share properties and methods across multiple objects.",
+    "The prototype of an object in JavaScript is used to define default values for an object.",
+    "The prototype of an object in JavaScript is used to create a new object with the same properties and methods as an existing object.",
+    "The prototype of an object in JavaScript is not used for anything."
+]))
+myTests.push(new RadioTest("How can you add a new property to the prototype of an object in JavaScript?",
+[
+    "You can add a new property to the prototype of an object in JavaScript by using the following syntax: objectName.prototype.newProperty = value;",
+    "You can add a new property to the prototype of an object in JavaScript by using the following syntax: objectName.newProperty = value;",
+    "You can add a new property to the prototype of an object in JavaScript by using the following syntax: objectName.prototype = newProperty;",
+    "You can add a new property to the prototype of an object in JavaScript by using the following syntax: objectName.prototype.newProperty.value = value;"
+]))    
+myTests.push(new RadioTest("What is the difference between an object's prototype and its constructor in JavaScript?",
+[
+    "The prototype of an object in JavaScript is an object that provides a mechanism for inheritance and is shared across all instances of an object. The constructor, on the other hand, is a function that is used to create and initialize an object. The prototype is a property of the constructor, and all instances of an object will have a reference to the constructor's prototype.",
+    "The prototype and the constructor of an object in JavaScript are the same thing."
+])) 
+
+myTests.push(new CheckboxTest("How can you access the prototype of an object in JavaScript?",
+[
+    "You can access the prototype of an object in JavaScript by using the following syntax: objectName.prototype",
+    "You can access the prototype of an object in JavaScript by using the following syntax: objectName.__proto__.",
+    "You can access the prototype of an object in JavaScript by using the following syntax: objectName.constructor.prototype",
+    "You can access the prototype of an object in JavaScript by using the following syntax: objectName.proto"
+], 2)) 
+myTests.push(new CheckboxTest("Which of the following is a correct way to add a method to the prototype of an object in JavaScript?",
+[
+    "objectName.prototype.newMethod = function(){...}",
+    "objectName.newMethod = function(){...}",
+    "objectName.prototype = newMethod()",
+    "objectName.prototype.methods.newMethod = function(){...}"
+], 2)) 
+myTests.push(new CheckboxTest("What is the difference between the __proto__ property and the prototype property in JavaScript?",
+[
+    "The __proto__ property is a property of an object that references its prototype, whereas the prototype property is a property of a constructor function that specifies the prototype for all objects created by that constructor. ",
+    "The __proto__ property is a property of a constructor function that references its prototype, whereas the prototype property is a property of an object that specifies the prototype for all objects created by that constructor.",
+    "The __proto__ property and the prototype property are the same thing in JavaScript",
+    "The __proto__ property is not used in JavaScript, and the prototype property is used only for creating new objects."
+], 2)) 
+myTests.push(new CheckboxTest("How can you check if an object has a specific property in JavaScript?",
+[
+    "You can use the in operator to check if an object has a specific property, for example: propertyName in objectName",
+    "You can use the hasOwnProperty() method to check if an object has a specific property, for example: objectName.hasOwnProperty(propertyName)",
+    "You can use the typeof operator to check if an object has a specific property, for example: typeof objectName.propertyName",
+    "You can use the isPrototypeOf() method to check if an object has a specific property, for example: objectName.isPrototypeOf(propertyName)"
+], 2))
+
+myTests.push(new DropdownTest("What is the purpose of the prototype chain in JavaScript?",
+[
+    "The prototype chain allows objects to inherit properties and methods from other objects.",
+    "The prototype chain is used to define the order of execution for JavaScript code.",
+    "The prototype chain is used to create a copy of an object.",
+    "The prototype chain is not used in JavaScript."
+]))
+
+myTests.push(new InputTest("Create paragraph with text \"The university\"",
+    "<p>The university</p>"
+))
+
+myTests.push(new DragDropTest("Arrange the following steps in the correct order to create an object in JavaScript using the object literal notation:",
+[
+    "Declare the object using curly braces {}",
+    "Assign properties and values to the object",
+    "Assign methods to the object",
+    "Define the object's constructor function"
+], "first"))
+  
 
 form = document.getElementById("myForm")
-// form.innerHTML = myTest.getHtmlCode() + form.innerHTML
-form.innerHTML = myTests.getHtmlCode() + form.innerHTML
-// myTests.setUp()
+myTests.forEach(function(test) {
+    form.innerHTML = test.getHtmlCodeForTest() + "<br><br>" + form.innerHTML
+})
+
 setUp("first")
 function setUp(className) {
     function handleDragStart(e) {
@@ -280,8 +359,13 @@ function setUp(className) {
 button = document.getElementById("myButton")
 
 button.onclick = function(){
-    // console.log(myTest.evaluateAnswer())
-    console.log(myTests.evaluateAnswer())
+    mark = 0
+    myTests.forEach(function(test) {
+        markForTest = test.evaluateAnswer()
+        console.log(test.question + " mark: " + markForTest)
+        mark += markForTest
+    })
+    console.log("Mark for the test: " + mark)
 } 
 
 
