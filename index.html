@@ -5,7 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LAB 4-6</title>
+    <style>
+        .box {
+            border: 3px solid #666;
+            background-color: #ddd;
+            border-radius: .5em;
+            padding: 10px;
+            cursor: move;
+            
+        }
 
+        .box.over {
+            border: 3px dotted #666;
+        }
+    </style>
 </head>
 <body>
     <header id="crin">
@@ -13,8 +26,13 @@
     </header>
 
     <form action="" id="myForm">
+        
         <input id="myButton" type="button" value="Відправити відповіді">
     </form>
+
+    <div id="test-area">
+
+    </div>
 
     <script src="test.js"></script>
 </body>
